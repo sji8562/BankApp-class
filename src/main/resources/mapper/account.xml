@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <!--반드시 세미콜론 생략-->
-<mapper namespace="com.tencoding.bank.repository.interfaces.AccountRepository">
+<mapper namespace="com.tenco.mybankapp.repository.interfaces.AccountRepository">
 	
 	<insert id="insert">
 		insert into account_tb(number , password, balance,userId,createdAt)values(#{number},#{password},#{balance},#{userId},now())

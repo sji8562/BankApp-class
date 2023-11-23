@@ -4,27 +4,39 @@ server:
     encoding: 
       charset: utf-8
       force: true 
-      
+
 spring: 
   mvc:
     view:
       prefix: /WEB-INF/view/
-      suffix: .jsp      
-#  datasource:
-#    url: jdbc:mysql://localhost:3306/mybank?serverTimeZone=Asia/Seoul 
-#    driver-class-name: com.mysql.cj.jdbc.Driver
-#    username: root
-#    password: root1234
-#  sql:
-#    init:
-#      schema-locations:
-#      - classpath:db/table.sql
-#      data-locations:
-#      - classpath:db/data.sql
-     
+      suffix: .jsp
+  datasource:
+    url: jdbc:mysql://localhost:3306/mybank?serverTimeZone=Asia/Seoul 
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    username: root
+    password: root1234
+    h2:
+    console:
+      enabled: false  # H2 콘솔 비활성화
+#sql:
+#  init:
+#    schema-locations:
+#      classpath:db/table.sql
+#    data-locations:
+#      classpath:db/data.sql
   #h2: 
   #  console:
   #    enabled: true
   #  output: 
   #    ansi:
   #    enabled: always
+
+mybatis:
+ mapper-locations:
+  classpath:mapper/**.xml
+configuration:
+  map-underscore-to-camel-case: true
+  
+logging:
+  level:
+    '[org.mybatis]': DEBUG

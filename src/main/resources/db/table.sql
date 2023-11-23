@@ -1,7 +1,4 @@
-create database mybank;
-use mybank;
 
--- 유저 테이블 설계 하기 
 create table user_tb(
  id int auto_increment primary key, 
  username varchar(50) not null unique, 
@@ -11,7 +8,7 @@ create table user_tb(
 );
 desc user_tb;
 
--- 계좌 정보 테이블 
+
 create table account_tb(
  id int auto_increment primary key, 
  number varchar(30) not null unique, 

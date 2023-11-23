@@ -12,6 +12,7 @@ public class TestController {
 	public String tempTest() {
 		return "temp";
 	}
+	
 	@GetMapping("/main-page")
 	public String tempMainPage() {
 		return "main";

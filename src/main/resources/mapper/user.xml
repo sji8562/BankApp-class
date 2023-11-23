@@ -2,12 +2,9 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <!--반드시 세미콜론 생략-->
-	<mapper namespace="com.tencoding.bank.repository.interfaces.UserRepository">
+<mapper namespace="com.tenco.mybankapp.repository.interfaces.UserRepository">
 		
-	  <select id="findByUsernameAndPassword" resultType="com.tencoding.bank.repository.model.User">
-			select * from user_tb 
-			where username = #{username} and password = #{password}
-		</select>
+	  
 		
 		<insert id ="insert">
 			insert into user_tb(username,password,fullname,created_at)values(#{username},#{password},#{fullname},now())
