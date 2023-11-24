@@ -5,14 +5,14 @@
       <h2>로그인</h2>
       <h5>어서오세요 여기는 후미진 어느 언덕입니다.</h5>
       <div>
-      	<form action="/user/signIn" method="post">
+      	<form action="/user/sign-in" method="post">
   			<div class="form-group">
     			<label for="username">username:</label>
-    			<input type="text" class="form-control username" placeholder="Enter username" id="username" name="username">
+    			<input type="text" class="form-control username" placeholder="Enter username" id="username" name="username" value="admin">
   			</div>
   			<div class="form-group">
     			<label for="pwd">Password:</label>
-    			<input type="password" class="form-control" placeholder="Enter password" id="pwd" name="password">
+    			<input type="password" class="form-control" placeholder="Enter password" id="pwd" name="password" value="1234">
   			</div>
   			<button type="submit" class="btn btn-primary">로그인</button>
 		</form>

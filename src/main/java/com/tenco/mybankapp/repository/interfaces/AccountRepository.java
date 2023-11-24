@@ -17,6 +17,7 @@ public interface AccountRepository {
     public int deleteById(Integer id);
     public List<Account> findAll();
     public Account findById(Integer id); 
-//    public List<Account> findByUserId(Integer principalId);
+    public List<Account> findByUserId(Integer principalId);
+    public Account findByNumber(String accountNumber);
 //    public Account findByNumber(String number);
 }

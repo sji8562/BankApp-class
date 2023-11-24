@@ -4,10 +4,8 @@
 <!--반드시 세미콜론 생략-->
 <mapper namespace="com.tenco.mybankapp.repository.interfaces.UserRepository">
 		
-	  
-		
 		<insert id ="insert">
-			insert into user_tb(username,password,fullname,created_at)values(#{username},#{password},#{fullname},now())
+			insert into user_tb(username,password,fullname,created_at)values(#{username},#{password},#{fullname},now() )
 		</insert>
 		<update id = 'updateById'>
 			update user_tb set username =#{username},password=#{password},fullname =#{fullname},where id =#{id}
@@ -18,6 +16,9 @@
 		
 		<select id="findById" resultType = "com.tenco.mybankapp.repository.entity.User">
 			select * from user_tb where id = #{id}
+		</select>
+		<select id="findByUsernameAndPassword" resultType = "com.tenco.mybankapp.repository.entity.User">
+			select * from user_tb where username = #{username} and password = #{password}
 		</select>
 		
 		<select id="findAll" resultType = "com.tenco.mybankapp.repository.entity.User">

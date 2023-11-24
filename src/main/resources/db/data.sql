@@ -28,4 +28,3 @@ values(100, 800, null, 1, null, now());
 -- 입금 내역만 (1번계좌에 500원 입금)
 insert into history_tb(amount,w_balance,d_balance,w_account_id,
 d_account_id,created_at) values(500,1300,null,1,null,now());
-insert <id = ">

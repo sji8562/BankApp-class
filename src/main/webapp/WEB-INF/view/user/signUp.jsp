@@ -5,7 +5,7 @@
       <h2>회원 가입</h2>
       <h5>어서오세요 여기는 후미진 어느 언덕입니다.</h5>
       <div>
-      	<form action="/user/signUp" method="post">
+      	<form action="/user/sign-up" method="post">
   			<div class="form-group">
     			<label for="username">username:</label>
     			<input type="text" class="form-control username" placeholder="Enter username" id="username" name="username">
