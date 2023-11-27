@@ -13,12 +13,15 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.tenco.mybankapp.dto.AccountSaveFormDTO;
+import com.tenco.mybankapp.dto.DepositFormDto;
+import com.tenco.mybankapp.dto.TransferFormDto;
 import com.tenco.mybankapp.dto.WithdrawFormDTO;
 import com.tenco.mybankapp.handler.exception.CustomRestfullException;
 import com.tenco.mybankapp.handler.exception.UnAuthorizedException;
 import com.tenco.mybankapp.repository.entity.Account;
 import com.tenco.mybankapp.repository.entity.User;
 import com.tenco.mybankapp.service.AccountService;
+import com.tenco.mybankapp.utils.Define;
 
 @Controller
 @RequestMapping("/account")
@@ -112,13 +115,85 @@ public class AccountController {
 		}
 		
 		if(dto.getWAccountNumber() == null ||dto.getWAccountNumber().isEmpty()) {
-			throw new CustomRestfullException("금액을 입력학시",HttpStatus.BAD_REQUEST);
+			throw new CustomRestfullException("계좌번호를 입력하시오",HttpStatus.BAD_REQUEST);
 		}
 		if(dto.getPassword() == null ||dto.getPassword().isEmpty()) {
-			throw new CustomRestfullException("금액을 입력학시",HttpStatus.BAD_REQUEST);
+			throw new CustomRestfullException("비밀번호를 입력하시오",HttpStatus.BAD_REQUEST);
 		}
 		accountService.withdraw(dto,principal.getId());
 		return "redirect:/account/list";
 	}
+	
+	@GetMapping("/deposit")
+	public String deposit() {
+		User principal = (User)session.getAttribute(Define.PRINCIPAL);
+		if(principal == null) {
+			throw new UnAuthorizedException("로그인 먼저 해주세요", 
+					HttpStatus.UNAUTHORIZED);
+		}
+		return "account/deposit";
+	}
+	
+	@PostMapping("/deposit")
+	public String depositProc(DepositFormDto dto) {
+		User principal = (User)session.getAttribute("principal");
+		if(principal == null) {
+			throw new UnAuthorizedException("로그인 먼저 해주세요",HttpStatus.UNAUTHORIZED);
+		}
+		if(dto.getAmount() == null) {
+			throw new CustomRestfullException("금액을 입력학시오",HttpStatus.BAD_REQUEST);
+		}
+		if(dto.getDAccountNumber() == null ||dto.getDAccountNumber().isEmpty()) {
+			throw new CustomRestfullException("계좌번호를 입력하시오",HttpStatus.BAD_REQUEST);
+		}
+		accountService.updateAccountDeposit(dto , principal.getId());
+		
+		return "redirect:/account/list";
+	}
+	
+	// 이체 페이지 요청
+		@GetMapping("/transfer")
+		public String transfer() {
+
+			// 1. 인증검사
+			User principal = (User) session.getAttribute(Define.PRINCIPAL);
+			if (principal == null) {
+				throw new UnAuthorizedException("로그인 먼저 해주세요", HttpStatus.UNAUTHORIZED);
+			}
+
+			return "account/transfer";
+		}
+
+		@PostMapping("/transfer")
+		public String transferProc(TransferFormDto dto) {
+			System.out.println("transfer 들어오나? ");
+			// 1. 인증검사
+			User principal = (User) session.getAttribute(Define.PRINCIPAL);
+			if (principal == null) {
+				throw new UnAuthorizedException("로그인 먼저 해주세요", HttpStatus.UNAUTHORIZED);
+			}
+
+			if (dto.getAmount() == null) {
+				throw new CustomRestfullException("금액을 입력하시오", HttpStatus.BAD_REQUEST);
+			}
+			if (dto.getAmount().longValue() <= 0) {
+				throw new CustomRestfullException("이체 금액이 0원 이하일 수 없습니다.", HttpStatus.BAD_REQUEST);
+			}
+			if (dto.getWAccountNumber() == null || dto.getWAccountNumber().isEmpty()) {
+				throw new CustomRestfullException("출금 계좌 번호를 입력하시오", HttpStatus.BAD_REQUEST);
+			}
+			if (dto.getDAccountNumber() == null || dto.getDAccountNumber().isEmpty()) {
+				throw new CustomRestfullException("입금 계좌 번호를 입력하시오", HttpStatus.BAD_REQUEST);
+			}
+			if (dto.getPassword() == null || dto.getPassword().isEmpty()) {
+				throw new CustomRestfullException("계좌 비밀번호를 입력하시오", HttpStatus.BAD_REQUEST);
+			}
+			
+			// 2. 서비스 호출
+			accountService.updateAccountTransferProc(dto, principal.getId());
+
+			
+			return "redirect:/account/list";
+		}
 	
 }

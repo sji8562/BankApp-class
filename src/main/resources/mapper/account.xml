@@ -26,6 +26,11 @@
 	<select id="findByNumber" resultType="com.tenco.mybankapp.repository.entity.Account">
 		select * from account_tb where number = #{number}
 	</select>
-	
+	<select id="findByDeposit" resultType="com.tenco.mybankapp.repository.entity.Account">
+		
+	</select>
+	<select id="findByWithdraw" resultType="com.tenco.mybankapp.repository.entity.Account">
+		
+	</select>
 
 </mapper>

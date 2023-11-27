@@ -10,7 +10,12 @@
 	<select id="findByIdAndDynamicType">
 		update into account_tb set balance = #{balance} where id = #{id}
 	</select>
-	
+	<select id="findByDeposit" resultType="com.tenco.mybankapp.repository.entity.Account">
+		select h.id, h.amount,h.h.w_balance,h.`created_at`,  ifnull(da.`user_id`,'ATM') as recerver, wa.`number` sender from history_tb h left join account_tb wa on h.w_account_id = wa.id left join account_tb da on h.d_account_id = da.id where h.`w_account_id` = #{userId};
+	</select>
+	<select id="findByWithdraw" resultType="com.tenco.mybankapp.repository.entity.Account">
+		select h.id, h.amount,h.`d_account_id`,h.`created_at`,  ifnull(wa.`user_id`,'ATM') as recerver, da.`number` sender from history_tb h left join account_tb da on h.d_account_id = da.id left join account_tb wa on h.d_account_id = wa.id where h.`d_account_id` = #{userId};
+	</select>
 	
 	
 
