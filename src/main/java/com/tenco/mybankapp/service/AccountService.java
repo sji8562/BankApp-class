@@ -166,5 +166,27 @@ public class AccountService {
 			e.getMessage();
 		}
 	}
+/**
+ * 단일 계좌 조회
+ */
+    public Account readAccount(Integer accountId) {
+		Account accountEntity = accountRepository.findById(accountId);
+		if(accountEntity == null){
+			throw new CustomRestfullException("해당 계좌를 찾을수 없습니다.", HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+		System.out.println("여긴오지?11111111111111111111");
+        return accountEntity;
+    }
+/**
+ * @param type = [all, deposit , withdraw]
+ * @param accountId
+ * @return 입금 내역 출금 내역 입출금 내역
+ */
+	public List<History> readHistoryListByAccount(String type, Integer accountId){
+		
+		List<History> historyEntity = historyRepository.findByIdAndDynamicType(type, accountId);
+		
+		return historyEntity;
+	}
 
 }

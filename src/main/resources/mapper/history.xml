@@ -3,20 +3,56 @@
 	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <!--반드시 세미콜론 생략-->
 <mapper namespace="com.tenco.mybankapp.repository.interfaces.HistoryRepository">
-
+	
 	<insert id="insert">
 		insert into history_tb(amount,w_account_id,d_account_id,w_balance,d_balance,created_at)values(#{amount},#{wAccountId},#{dAccountId},#{wBalance},#{dBalance},now())
 	</insert>
-	<select id="findByIdAndDynamicType">
-		update into account_tb set balance = #{balance} where id = #{id}
+	<select id="findByIdAndDynamicType" resultType="com.tenco.mybankapp.repository.entity.History">
+		
+		<if test = "type == 'deposit'">
+			select h.id, h.amount, h.d_balance as balance,
+		       h.created_at,
+		       da.number as receiver, 
+		       ifnull(h.w_account_id, 'ATM') as sender, 
+		       wa.number 
+		from history_tb as h  
+		left join account_tb as da
+		on h.d_account_id = da.id 
+		left join account_tb as wa 
+		on h.w_account_id = wa.id 
+		where h.d_account_id = #{accountId} 
+		</if>
+		<if test = "type == 'withdraw'">
+			select h.id, h.amount, h.w_balance as balance,
+		       h.created_at,
+		       ifnull(da.number, 'ATM') as receiver,
+		       wa.number as sender
+		from history_tb as h 
+		left join account_tb as wa
+		on  h.w_account_id = wa.id
+		left join account_tb as da 
+		on h.d_account_id = da.id 
+		where h.w_account_id = #{accountId} 
+		</if>
+		<if test = "type == 'all'">
+			select h.id, h.amount, 
+		case when h.w_account_id = #{accountId} then (h.w_balance)
+		     when h.d_account_id = #{accountId} then (h.d_balance)
+		     end as balance,
+		     ifnull(wa.number, 'ATM') as sender, 
+		     ifnull(da.number, 'ATM') as receiver, 
+		     h.created_at 
+		from history_tb as h 
+		left join account_tb as da 
+		on h.d_account_id = da.id 
+		left join account_tb as wa 
+		on h.w_account_id = wa.id
+		where h.d_account_id = #{accountId} or h.w_account_id = #{accountId}
+		
+		</if>
+
+		<!-- update into account_tb set balance = #{balance} where id = #{id} -->
 	</select>
-	<select id="findByDeposit" resultType="com.tenco.mybankapp.repository.entity.Account">
-		select h.id, h.amount,h.h.w_balance,h.`created_at`,  ifnull(da.`user_id`,'ATM') as recerver, wa.`number` sender from history_tb h left join account_tb wa on h.w_account_id = wa.id left join account_tb da on h.d_account_id = da.id where h.`w_account_id` = #{userId};
-	</select>
-	<select id="findByWithdraw" resultType="com.tenco.mybankapp.repository.entity.Account">
-		select h.id, h.amount,h.`d_account_id`,h.`created_at`,  ifnull(wa.`user_id`,'ATM') as recerver, da.`number` sender from history_tb h left join account_tb da on h.d_account_id = da.id left join account_tb wa on h.d_account_id = wa.id where h.`d_account_id` = #{userId};
-	</select>
-	
 	
 
 </mapper>
